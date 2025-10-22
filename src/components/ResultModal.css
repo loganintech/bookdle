@@ -1,0 +1,135 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  padding: 2rem;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #8b7355;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  color: #4a3820;
+}
+
+.modal-body {
+  text-align: center;
+}
+
+.modal-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.modal-title.success {
+  color: #4a8a4a;
+}
+
+.modal-title.failure {
+  color: #8a4a4a;
+}
+
+.modal-message {
+  font-size: 1.1rem;
+  color: #6b5d4f;
+  margin-bottom: 1.5rem;
+}
+
+.answer-display {
+  background: #f9f7f4;
+  border: 2px solid #d0c4b0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.answer-book {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #4a3820;
+  margin-bottom: 0.5rem;
+}
+
+.answer-author {
+  font-size: 1rem;
+  color: #6b5d4f;
+  font-style: italic;
+}
+
+.share-button {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: #6b5d4f;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.share-button:hover {
+  background: #4a3820;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.share-button:active {
+  transform: translateY(0);
+}

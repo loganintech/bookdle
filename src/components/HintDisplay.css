@@ -1,0 +1,70 @@
+.hint-display {
+  margin: 2rem 0;
+}
+
+.hint-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4a3820;
+  margin-bottom: 1rem;
+}
+
+.hints-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.hint-card {
+  padding: 1rem;
+  border-radius: 8px;
+  border: 2px solid #d0c4b0;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.hint-card.locked {
+  background: #f0ebe4;
+  opacity: 0.6;
+}
+
+.hint-card.unlocked {
+  background: #fff;
+  border-color: #8b7355;
+  animation: unlock 0.3s ease-out;
+}
+
+@keyframes unlock {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.hint-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #8b7355;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.hint-value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #4a3820;
+}
+
+.hint-card.locked .hint-value {
+  font-family: monospace;
+  letter-spacing: 0.2em;
+  color: #9b8d7f;
+}

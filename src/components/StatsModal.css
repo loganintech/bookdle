@@ -1,0 +1,133 @@
+.stats-modal {
+  max-width: 600px;
+}
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4a3820;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: #6b5d4f;
+  margin-top: 0.25rem;
+}
+
+.guess-distribution {
+  margin: 2rem 0;
+}
+
+.distribution-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4a3820;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.distribution-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.distribution-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.distribution-label {
+  font-weight: 600;
+  color: #4a3820;
+  min-width: 1.5rem;
+}
+
+.distribution-bar-container {
+  flex: 1;
+  height: 28px;
+  display: flex;
+  align-items: center;
+}
+
+.distribution-bar {
+  background: #8b7355;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 0.5rem;
+  border-radius: 4px;
+  min-width: 28px;
+  transition: width 0.3s ease;
+}
+
+.distribution-count {
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.download-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e0d8cc;
+}
+
+.download-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #4a3820;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.download-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.download-button {
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid #d0c4b0;
+  border-radius: 6px;
+  background: white;
+  color: #6b5d4f;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.download-button:hover {
+  background: #f9f7f4;
+  border-color: #8b7355;
+}
+
+@media (max-width: 600px) {
+  .stats-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .download-buttons {
+    grid-template-columns: 1fr;
+  }
+}

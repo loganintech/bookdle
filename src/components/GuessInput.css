@@ -1,0 +1,85 @@
+.guess-input-container {
+  margin: 1.5rem 0;
+}
+
+.guess-form {
+  position: relative;
+}
+
+.input-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.guess-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #d0c4b0;
+  border-radius: 4px;
+  background: white;
+  color: #4a3820;
+  font-family: inherit;
+}
+
+.guess-input:focus {
+  outline: none;
+  border-color: #8b7355;
+}
+
+.guess-input:disabled {
+  background: #f0ebe4;
+  cursor: not-allowed;
+}
+
+.guess-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  background: #6b5d4f;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.guess-button:hover:not(:disabled) {
+  background: #4a3820;
+}
+
+.guess-button:disabled {
+  background: #c0b4a4;
+  cursor: not-allowed;
+}
+
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 60px;
+  margin-top: 0.5rem;
+  background: white;
+  border: 2px solid #d0c4b0;
+  border-radius: 4px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 100;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  color: #4a3820;
+}
+
+.suggestion:hover,
+.suggestion.selected {
+  background: #f0ebe4;
+}
+
+.suggestion:not(:last-child) {
+  border-bottom: 1px solid #e0d8cc;
+}

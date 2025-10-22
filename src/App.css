@@ -1,0 +1,42 @@
+.app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.main {
+  margin-top: 1rem;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #6b5d4f;
+}
+
+.loading {
+  font-size: 1.1rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.error h2 {
+  font-size: 1.5rem;
+  color: #8a4a4a;
+  margin-bottom: 1rem;
+}
+
+.error p {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}

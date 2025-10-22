@@ -1,0 +1,46 @@
+.help-modal {
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.help-content {
+  text-align: left;
+}
+
+.help-intro {
+  font-size: 1.1rem;
+  color: #4a3820;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.help-section {
+  margin-bottom: 1.5rem;
+}
+
+.help-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4a3820;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.help-section ul,
+.help-section ol {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.help-section li {
+  color: #6b5d4f;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.help-section li strong {
+  color: #4a3820;
+}
