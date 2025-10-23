@@ -31,7 +31,11 @@ export async function generateShareText(
 
   const emojiGrid = emojis.join('');
 
-  return `Bookdle #${puzzleNumber} ${scoreText}\n\n${emojiGrid}`;
+  // Generate URL to this specific puzzle
+  const baseUrl = window.location.origin + window.location.pathname;
+  const puzzleUrl = `${baseUrl}?date=${date}`;
+
+  return `Bookdle #${puzzleNumber} ${scoreText}\n\n${emojiGrid}\n\n${puzzleUrl}`;
 }
 
 /**
