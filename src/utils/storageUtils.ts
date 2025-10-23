@@ -1,4 +1,4 @@
-import type { GameState, GameResult, UserStats, LocalStorageData } from '../types';
+import type { GameState, GameResult, UserStats } from '../types';
 
 const STORAGE_KEY_HISTORY = 'bookdle_history';
 const STORAGE_KEY_CURRENT = 'bookdle_current';
