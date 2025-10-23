@@ -4,6 +4,7 @@ import GuessInput from './GuessInput';
 import HintDisplay from './HintDisplay';
 import GuessHistory from './GuessHistory';
 import ResultModal from './ResultModal';
+import { shareGameResult } from '../utils/shareUtils';
 import './GameBoard.css';
 
 interface GameBoardProps {
@@ -31,39 +32,73 @@ export default function GameBoard({
   onGetHint,
 }: GameBoardProps) {
   const [showResult, setShowResult] = useState(false);
+  const [copied, setCopied] = useState(false);
   const hasShownResultRef = useRef(false);
+  const justCompletedRef = useRef(false);
 
   // Reset when puzzle changes
   useEffect(() => {
     hasShownResultRef.current = false;
+    justCompletedRef.current = false;
     setShowResult(false);
+    setCopied(false);
   }, [puzzle.id]);
 
   const handleGuess = (guess: string) => {
+    const wasGameOver = gameState.gameOver;
     onGuess(guess);
 
-    // Show result modal after a slight delay if game is over
+    // Show result modal after a slight delay if this guess wins the game
     setTimeout(() => {
-      if (guess.toLowerCase() === puzzle.book.toLowerCase()) {
+      if (!wasGameOver && guess.toLowerCase() === puzzle.book.toLowerCase()) {
+        justCompletedRef.current = true;
         setShowResult(true);
         hasShownResultRef.current = true;
       }
     }, 500);
   };
 
-  // Show result modal when game ends (including when using all actions)
-  useEffect(() => {
-    if (gameState.gameOver && !hasShownResultRef.current) {
-      const timer = setTimeout(() => {
-        setShowResult(true);
-        hasShownResultRef.current = true;
-      }, 500);
-      return () => clearTimeout(timer);
+  // Don't need to show modal for losses - the banner is enough
+
+  const handleShare = async () => {
+    const success = await shareGameResult(
+      puzzle.date,
+      firstPuzzleDate,
+      gameState.actionHistory.length,
+      gameState.won,
+      gameState.actionHistory.length
+    );
+
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
-  }, [gameState.gameOver]);
+  };
 
   return (
     <div className="game-board">
+      {gameState.gameOver && (
+        <div className={`completion-banner ${gameState.won ? 'won' : 'lost'}`}>
+          <div className="completion-info">
+            <div className="completion-icon">{gameState.won ? '🎉' : '📚'}</div>
+            <div className="completion-text">
+              {gameState.won ? (
+                <>
+                  <strong>Solved!</strong> You got it in {gameState.actionHistory.length} {gameState.actionHistory.length === 1 ? 'attempt' : 'attempts'}
+                </>
+              ) : (
+                <>
+                  <strong>Completed</strong> ({gameState.actionHistory.length} attempts)
+                </>
+              )}
+            </div>
+          </div>
+          <button className="banner-share-button" onClick={handleShare}>
+            {copied ? '✓ Copied!' : '📋 Share'}
+          </button>
+        </div>
+      )}
+
       <div className="sentence-display">
         <h2 className="sentence-label">First Sentence:</h2>
         <p className="sentence-text">{puzzle.firstSentence}</p>

@@ -3,6 +3,91 @@
   margin: 0 auto;
 }
 
+.completion-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  border: 2px solid;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.completion-banner.won {
+  background: #e8f5e8;
+  border-color: #6b9b6b;
+  color: #2d5a2d;
+}
+
+.completion-banner.lost {
+  background: #f9f5e8;
+  border-color: #d4a373;
+  color: #6b5434;
+}
+
+.completion-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.completion-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.completion-text {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.completion-text strong {
+  font-weight: 700;
+}
+
+.banner-share-button {
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.banner-share-button:hover {
+  background: rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.banner-share-button:active {
+  transform: translateY(0);
+}
+
+.completion-banner.won .banner-share-button {
+  color: #2d5a2d;
+}
+
+.completion-banner.lost .banner-share-button {
+  color: #6b5434;
+}
+
 .sentence-display {
   background: white;
   border: 2px solid #d0c4b0;
