@@ -13,22 +13,56 @@ import { getTodayDate } from './utils/dateUtils';
 function App() {
   const [showStats, setShowStats] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
-  const [viewingDate, setViewingDate] = useState<string | undefined>(undefined);
+  const [viewingDate, setViewingDate] = useState<string | undefined>(() => {
+    // Check URL for date parameter
+    const params = new URLSearchParams(window.location.search);
+    const urlDate = params.get('date');
+
+    // In production, don't allow future dates via URL
+    if (urlDate && !import.meta.env.DEV) {
+      const today = getTodayDate();
+      if (urlDate > today) {
+        return undefined; // Redirect to today
+      }
+    }
+
+    return urlDate || undefined;
+  });
   const [availableDates, setAvailableDates] = useState<string[]>([]);
 
   const { puzzle, bookList, firstPuzzleDate, loading, error } = usePuzzle(viewingDate);
-  const { gameState, makeGuess } = useGameState(puzzle);
+  const { gameState, makeGuess, getHint } = useGameState(puzzle);
 
   // Load available puzzle dates
   useEffect(() => {
     getAllPuzzleDates().then(dates => setAvailableDates(dates));
   }, []);
 
+  // Update URL when viewing date changes
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (viewingDate) {
+      params.set('date', viewingDate);
+    } else {
+      params.delete('date');
+    }
+    const newUrl = params.toString()
+      ? `${window.location.pathname}?${params.toString()}`
+      : window.location.pathname;
+    window.history.replaceState({}, '', newUrl);
+  }, [viewingDate]);
+
   const currentDate = viewingDate || getTodayDate();
+  const todayDate = getTodayDate();
   const currentIndex = availableDates.indexOf(currentDate);
+  const todayIndex = availableDates.indexOf(todayDate);
+
   const hasPrevious = currentIndex > 0;
-  const hasNext = currentIndex < availableDates.length - 1 && currentIndex !== -1;
-  const isToday = !viewingDate || viewingDate === getTodayDate();
+  // Can only go to next if we're not at today or beyond (unless in dev mode)
+  const hasNext = currentIndex < availableDates.length - 1 &&
+                  currentIndex !== -1 &&
+                  (import.meta.env.DEV || currentIndex < todayIndex);
+  const isToday = !viewingDate || viewingDate === todayDate;
 
   const handlePrevious = () => {
     if (hasPrevious) {
@@ -71,17 +105,15 @@ function App() {
       <Header onShowStats={() => setShowStats(true)} onShowHelp={() => setShowHelp(true)} />
 
       <main className="main">
-        {import.meta.env.DEV && (
-          <PuzzleNavigation
-            currentDate={currentDate}
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            onToday={handleToday}
-            hasPrevious={hasPrevious}
-            hasNext={hasNext}
-            isToday={isToday}
-          />
-        )}
+        <PuzzleNavigation
+          currentDate={currentDate}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          onToday={handleToday}
+          hasPrevious={hasPrevious}
+          hasNext={hasNext}
+          isToday={isToday}
+        />
 
         <GameBoard
           puzzle={puzzle}
@@ -89,6 +121,7 @@ function App() {
           firstPuzzleDate={firstPuzzleDate}
           gameState={gameState}
           onGuess={makeGuess}
+          onGetHint={getHint}
         />
       </main>
 

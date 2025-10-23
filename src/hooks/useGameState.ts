@@ -14,6 +14,7 @@ const MAX_GUESSES = 5;
 interface UseGameStateResult {
   gameState: GameState;
   makeGuess: (guess: string) => boolean;
+  getHint: () => void;
   hasPlayedToday: boolean;
   todayResult: GameResult | null;
 }
@@ -27,31 +28,31 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
       return createInitialState(0, getTodayDate());
     }
 
-    // Check if there's already a completed game for today
+    // Use the puzzle's date, not today's date
+    const puzzleDate = puzzle.date;
     const history = getGameHistory();
-    const todayDate = getTodayDate();
-    const todayResult = history[todayDate];
+    const savedResult = history[puzzleDate];
 
-    if (todayResult) {
-      // Game already completed today
+    if (savedResult) {
+      // Game already completed for this date
       return {
         puzzleId: puzzle.id,
-        date: todayDate,
-        guesses: todayResult.guesses,
-        hintsUnlocked: todayResult.hintsUnlocked,
-        won: todayResult.won,
+        date: puzzleDate,
+        guesses: savedResult.guesses,
+        hintsUnlocked: savedResult.hintsUnlocked,
+        won: savedResult.won,
         gameOver: true,
       };
     }
 
     // Check for existing game state
     const saved = getCurrentGameState();
-    if (saved && saved.date === todayDate && saved.puzzleId === puzzle.id) {
+    if (saved && saved.date === puzzleDate && saved.puzzleId === puzzle.id) {
       return saved;
     }
 
     // Start new game
-    return createInitialState(puzzle.id, todayDate);
+    return createInitialState(puzzle.id, puzzleDate);
   });
 
   const [hasPlayedToday, setHasPlayedToday] = useState(false);
@@ -81,31 +82,37 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
     }
   }, [gameState]);
 
-  // Reset game state if puzzle changes (new day)
+  // Reset game state if puzzle changes (different date or puzzle)
   useEffect(() => {
     if (!puzzle) return;
 
-    const todayDate = getTodayDate();
+    const puzzleDate = puzzle.date;
 
-    // If the date has changed, reset the game
-    if (gameState.date !== todayDate) {
+    // If the puzzle has changed, update the game state
+    if (gameState.date !== puzzleDate || gameState.puzzleId !== puzzle.id) {
       const history = getGameHistory();
-      const todayResult = history[todayDate];
+      const savedResult = history[puzzleDate];
 
-      if (todayResult) {
+      if (savedResult) {
         setGameState({
           puzzleId: puzzle.id,
-          date: todayDate,
-          guesses: todayResult.guesses,
-          hintsUnlocked: todayResult.hintsUnlocked,
-          won: todayResult.won,
+          date: puzzleDate,
+          guesses: savedResult.guesses,
+          hintsUnlocked: savedResult.hintsUnlocked,
+          won: savedResult.won,
           gameOver: true,
         });
       } else {
-        setGameState(createInitialState(puzzle.id, todayDate));
+        // Check for in-progress game
+        const saved = getCurrentGameState();
+        if (saved && saved.date === puzzleDate && saved.puzzleId === puzzle.id) {
+          setGameState(saved);
+        } else {
+          setGameState(createInitialState(puzzle.id, puzzleDate));
+        }
       }
     }
-  }, [puzzle, gameState.date]);
+  }, [puzzle, gameState.date, gameState.puzzleId]);
 
   /**
    * Make a guess
@@ -160,9 +167,26 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
     [puzzle, gameState]
   );
 
+  /**
+   * Get a hint (unlock the first hint without making a guess)
+   */
+  const getHint = useCallback(() => {
+    if (gameState.gameOver) return;
+    if (gameState.hintsUnlocked >= 1) return; // Already have at least one hint
+    if (gameState.guesses.length > 0) return; // Only works before first guess
+
+    const newState: GameState = {
+      ...gameState,
+      hintsUnlocked: 1,
+    };
+
+    setGameState(newState);
+  }, [gameState]);
+
   return {
     gameState,
     makeGuess,
+    getHint,
     hasPlayedToday,
     todayResult,
   };

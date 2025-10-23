@@ -17,6 +17,7 @@ interface GameBoardProps {
     gameOver: boolean;
   };
   onGuess: (guess: string) => void;
+  onGetHint: () => void;
 }
 
 export default function GameBoard({
@@ -25,6 +26,7 @@ export default function GameBoard({
   firstPuzzleDate,
   gameState,
   onGuess,
+  onGetHint,
 }: GameBoardProps) {
   const [showResult, setShowResult] = useState(false);
 
@@ -61,8 +63,14 @@ export default function GameBoard({
         correctAnswer={gameState.won ? puzzle.book : undefined}
       />
 
-      {gameState.guesses.length > 0 && (
-        <HintDisplay puzzle={puzzle} hintsUnlocked={gameState.hintsUnlocked} />
+      <HintDisplay puzzle={puzzle} hintsUnlocked={gameState.hintsUnlocked} />
+
+      {!gameState.gameOver && gameState.guesses.length === 0 && gameState.hintsUnlocked === 0 && (
+        <div className="hint-button-container">
+          <button className="hint-button" onClick={onGetHint}>
+            Get Hint
+          </button>
+        </div>
       )}
 
       {gameState.gameOver && showResult && (
