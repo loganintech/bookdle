@@ -15,12 +15,19 @@ export interface PuzzleData {
   puzzles: Puzzle[];
 }
 
+// Action in the game (either a guess or hint request)
+export type GameAction =
+  | { type: 'guess'; value: string }
+  | { type: 'hint' };
+
 // Game state for a single play session
 export interface GameState {
   puzzleId: number;
   date: string;
   guesses: string[];
   hintsUnlocked: number; // 0-4 (year, genre, length, author)
+  hintsRequested: number; // How many times user clicked "Get Hint"
+  actionHistory: GameAction[]; // Ordered list of all actions (guesses and hints)
   won: boolean;
   gameOver: boolean;
 }
@@ -33,6 +40,8 @@ export interface GameResult {
   won: boolean;
   guesses: string[];
   hintsUnlocked: number;
+  hintsRequested: number;
+  actionHistory?: GameAction[]; // Optional for backward compatibility
 }
 
 // User statistics

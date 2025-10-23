@@ -40,6 +40,8 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
         date: puzzleDate,
         guesses: savedResult.guesses,
         hintsUnlocked: savedResult.hintsUnlocked,
+        hintsRequested: savedResult.hintsRequested || 0,
+        actionHistory: savedResult.actionHistory || [],
         won: savedResult.won,
         gameOver: true,
       };
@@ -99,6 +101,8 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
           date: puzzleDate,
           guesses: savedResult.guesses,
           hintsUnlocked: savedResult.hintsUnlocked,
+          hintsRequested: savedResult.hintsRequested || 0,
+          actionHistory: savedResult.actionHistory || [],
           won: savedResult.won,
           gameOver: true,
         });
@@ -121,7 +125,7 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
     (guess: string): boolean => {
       if (!puzzle) return false;
       if (gameState.gameOver) return false;
-      if (gameState.guesses.length >= MAX_GUESSES) return false;
+      if (gameState.actionHistory.length >= MAX_GUESSES) return false;
 
       const trimmedGuess = guess.trim();
       if (!trimmedGuess) return false;
@@ -134,12 +138,14 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
       const isCorrect = trimmedGuess.toLowerCase() === puzzle.book.toLowerCase();
       const newGuesses = [...gameState.guesses, trimmedGuess];
       const newHintsUnlocked = isCorrect ? gameState.hintsUnlocked : gameState.hintsUnlocked + 1;
-      const isGameOver = isCorrect || newGuesses.length >= MAX_GUESSES;
+      const newActionHistory = [...gameState.actionHistory, { type: 'guess' as const, value: trimmedGuess }];
+      const isGameOver = isCorrect || newActionHistory.length >= MAX_GUESSES;
 
       const newState: GameState = {
         ...gameState,
         guesses: newGuesses,
         hintsUnlocked: newHintsUnlocked,
+        actionHistory: newActionHistory,
         won: isCorrect,
         gameOver: isGameOver,
       };
@@ -151,10 +157,12 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
         const result: GameResult = {
           date: gameState.date,
           puzzleId: gameState.puzzleId,
-          attempts: newGuesses.length,
+          attempts: newActionHistory.length, // Count all actions (guesses + hints)
           won: isCorrect,
           guesses: newGuesses,
           hintsUnlocked: newHintsUnlocked,
+          hintsRequested: gameState.hintsRequested,
+          actionHistory: newActionHistory,
         };
         saveGameResult(result);
         clearCurrentGameState();
@@ -168,19 +176,43 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
   );
 
   /**
-   * Get a hint (unlock the first hint without making a guess)
+   * Get a hint (unlock the next hint without making a guess)
    */
   const getHint = useCallback(() => {
     if (gameState.gameOver) return;
-    if (gameState.hintsUnlocked >= 1) return; // Already have at least one hint
-    if (gameState.guesses.length > 0) return; // Only works before first guess
+    if (gameState.hintsUnlocked >= 4) return; // All hints already unlocked
+    if (gameState.actionHistory.length >= MAX_GUESSES) return; // No actions left
+
+    const newActionHistory = [...gameState.actionHistory, { type: 'hint' as const }];
+    const isGameOver = newActionHistory.length >= MAX_GUESSES;
 
     const newState: GameState = {
       ...gameState,
-      hintsUnlocked: 1,
+      hintsUnlocked: gameState.hintsUnlocked + 1,
+      hintsRequested: gameState.hintsRequested + 1,
+      actionHistory: newActionHistory,
+      gameOver: isGameOver,
     };
 
     setGameState(newState);
+
+    // If using the hint ends the game (used all 5 actions), save result
+    if (isGameOver) {
+      const result: GameResult = {
+        date: gameState.date,
+        puzzleId: gameState.puzzleId,
+        attempts: newActionHistory.length,
+        won: false, // Can't win by using hints
+        guesses: gameState.guesses,
+        hintsUnlocked: gameState.hintsUnlocked + 1,
+        hintsRequested: gameState.hintsRequested + 1,
+        actionHistory: newActionHistory,
+      };
+      saveGameResult(result);
+      clearCurrentGameState();
+      setHasPlayedToday(true);
+      setTodayResult(result);
+    }
   }, [gameState]);
 
   return {
@@ -201,6 +233,8 @@ function createInitialState(puzzleId: number, date: string): GameState {
     date,
     guesses: [],
     hintsUnlocked: 0,
+    hintsRequested: 0,
+    actionHistory: [],
     won: false,
     gameOver: false,
   };

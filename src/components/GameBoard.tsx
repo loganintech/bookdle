@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { Puzzle } from '../types';
+import { useState, useEffect, useRef } from 'react';
+import type { Puzzle, GameAction } from '../types';
 import GuessInput from './GuessInput';
 import HintDisplay from './HintDisplay';
 import GuessHistory from './GuessHistory';
@@ -13,6 +13,8 @@ interface GameBoardProps {
   gameState: {
     guesses: string[];
     hintsUnlocked: number;
+    hintsRequested: number;
+    actionHistory: GameAction[];
     won: boolean;
     gameOver: boolean;
   };
@@ -29,20 +31,36 @@ export default function GameBoard({
   onGetHint,
 }: GameBoardProps) {
   const [showResult, setShowResult] = useState(false);
+  const hasShownResultRef = useRef(false);
+
+  // Reset when puzzle changes
+  useEffect(() => {
+    hasShownResultRef.current = false;
+    setShowResult(false);
+  }, [puzzle.id]);
 
   const handleGuess = (guess: string) => {
     onGuess(guess);
 
     // Show result modal after a slight delay if game is over
     setTimeout(() => {
-      if (
-        (guess.toLowerCase() === puzzle.book.toLowerCase()) ||
-        (gameState.guesses.length + 1 >= 5)
-      ) {
+      if (guess.toLowerCase() === puzzle.book.toLowerCase()) {
         setShowResult(true);
+        hasShownResultRef.current = true;
       }
     }, 500);
   };
+
+  // Show result modal when game ends (including when using all actions)
+  useEffect(() => {
+    if (gameState.gameOver && !hasShownResultRef.current) {
+      const timer = setTimeout(() => {
+        setShowResult(true);
+        hasShownResultRef.current = true;
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [gameState.gameOver]);
 
   return (
     <div className="game-board">
@@ -59,8 +77,10 @@ export default function GameBoard({
       />
 
       <GuessHistory
-        guesses={gameState.guesses}
-        correctAnswer={gameState.won ? puzzle.book : undefined}
+        actionHistory={gameState.actionHistory}
+        correctAnswer={puzzle.book}
+        gameOver={gameState.gameOver}
+        won={gameState.won}
       />
 
       <HintDisplay
@@ -69,10 +89,10 @@ export default function GameBoard({
         gameOver={gameState.gameOver}
       />
 
-      {!gameState.gameOver && gameState.guesses.length === 0 && gameState.hintsUnlocked === 0 && (
+      {!gameState.gameOver && gameState.hintsUnlocked < 4 && gameState.actionHistory.length < 5 && (
         <div className="hint-button-container">
           <button className="hint-button" onClick={onGetHint}>
-            Get Hint
+            Get Hint ({Math.min(4 - gameState.hintsUnlocked, 5 - gameState.actionHistory.length)} remaining)
           </button>
         </div>
       )}
