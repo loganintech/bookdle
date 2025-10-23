@@ -1,0 +1,83 @@
+.puzzle-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f9f7f4;
+  border: 2px solid #d0c4b0;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.nav-button {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 2px solid #d0c4b0;
+  border-radius: 6px;
+  background: white;
+  color: #6b5d4f;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav-button:hover:not(:disabled) {
+  background: #6b5d4f;
+  color: white;
+  border-color: #6b5d4f;
+}
+
+.nav-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.nav-date {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.date-display {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4a3820;
+}
+
+.today-button {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid #8b7355;
+  border-radius: 4px;
+  background: white;
+  color: #8b7355;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.today-button:hover {
+  background: #8b7355;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .puzzle-navigation {
+    flex-wrap: wrap;
+  }
+
+  .nav-date {
+    order: -1;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-button {
+    flex: 1;
+  }
+}
