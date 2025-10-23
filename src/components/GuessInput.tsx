@@ -80,8 +80,8 @@ export default function GuessInput({
     setInput(book);
     setShowSuggestions(false);
     setSelectedIndex(-1);
-    onGuess(book);
-    setInput('');
+    // Focus the input so user can easily hit Enter if they want to submit
+    inputRef.current?.focus();
   };
 
   return (
