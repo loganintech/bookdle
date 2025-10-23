@@ -47,9 +47,9 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
       };
     }
 
-    // Check for existing game state
-    const saved = getCurrentGameState();
-    if (saved && saved.date === puzzleDate && saved.puzzleId === puzzle.id) {
+    // Check for existing game state for this specific date
+    const saved = getCurrentGameState(puzzleDate);
+    if (saved && saved.puzzleId === puzzle.id) {
       return saved;
     }
 
@@ -107,9 +107,9 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
           gameOver: true,
         });
       } else {
-        // Check for in-progress game
-        const saved = getCurrentGameState();
-        if (saved && saved.date === puzzleDate && saved.puzzleId === puzzle.id) {
+        // Check for in-progress game for this specific date
+        const saved = getCurrentGameState(puzzleDate);
+        if (saved && saved.puzzleId === puzzle.id) {
           setGameState(saved);
         } else {
           setGameState(createInitialState(puzzle.id, puzzleDate));
@@ -165,7 +165,7 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
           actionHistory: newActionHistory,
         };
         saveGameResult(result);
-        clearCurrentGameState();
+        clearCurrentGameState(gameState.date);
         setHasPlayedToday(true);
         setTodayResult(result);
       }
@@ -209,7 +209,7 @@ export function useGameState(puzzle: Puzzle | null): UseGameStateResult {
         actionHistory: newActionHistory,
       };
       saveGameResult(result);
-      clearCurrentGameState();
+      clearCurrentGameState(gameState.date);
       setHasPlayedToday(true);
       setTodayResult(result);
     }

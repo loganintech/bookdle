@@ -34,6 +34,19 @@ export function getPuzzleNumber(dateString: string, firstPuzzleDate: string): nu
 }
 
 /**
+ * Get the date string from a puzzle number
+ */
+export function getDateFromPuzzleNumber(puzzleNumber: number, firstPuzzleDate: string): string {
+  const firstDate = new Date(firstPuzzleDate + 'T00:00:00Z');
+  const targetDate = new Date(firstDate.getTime() + (puzzleNumber - 1) * 24 * 60 * 60 * 1000);
+
+  const year = targetDate.getUTCFullYear();
+  const month = String(targetDate.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(targetDate.getUTCDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
  * Check if a date string is valid and in the correct format
  */
 export function isValidDateString(dateString: string): boolean {

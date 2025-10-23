@@ -7,28 +7,51 @@ import HelpModal from './components/HelpModal';
 import PuzzleNavigation from './components/PuzzleNavigation';
 import { usePuzzle } from './hooks/usePuzzle';
 import { useGameState } from './hooks/useGameState';
-import { getAllPuzzleDates } from './utils/puzzleData';
-import { getTodayDate } from './utils/dateUtils';
+import { getAllPuzzleDates, getFirstPuzzleDate } from './utils/puzzleData';
+import { getTodayDate, getDateFromPuzzleNumber, getPuzzleNumber } from './utils/dateUtils';
 
 function App() {
   const [showStats, setShowStats] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
-  const [viewingDate, setViewingDate] = useState<string | undefined>(() => {
-    // Check URL for date parameter
-    const params = new URLSearchParams(window.location.search);
-    const urlDate = params.get('date');
+  const [viewingDate, setViewingDate] = useState<string | undefined>(undefined);
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [cachedFirstPuzzleDate, setCachedFirstPuzzleDate] = useState<string>('');
 
-    // In production, don't allow future dates via URL
-    if (urlDate && !import.meta.env.DEV) {
-      const today = getTodayDate();
-      if (urlDate > today) {
-        return undefined; // Redirect to today
+  // Load first puzzle date and handle URL parameters
+  useEffect(() => {
+    async function initializeDate() {
+      const firstDate = await getFirstPuzzleDate();
+      setCachedFirstPuzzleDate(firstDate);
+
+      const params = new URLSearchParams(window.location.search);
+      const urlId = params.get('id');
+      const urlDate = params.get('date');
+
+      let targetDate: string | undefined = undefined;
+
+      // Prefer id parameter over date parameter
+      if (urlId) {
+        const puzzleNumber = parseInt(urlId, 10);
+        if (!isNaN(puzzleNumber) && puzzleNumber > 0) {
+          targetDate = getDateFromPuzzleNumber(puzzleNumber, firstDate);
+        }
+      } else if (urlDate) {
+        targetDate = urlDate;
       }
+
+      // In production, don't allow future dates via URL
+      if (targetDate && !import.meta.env.DEV) {
+        const today = getTodayDate();
+        if (targetDate > today) {
+          targetDate = undefined; // Redirect to today
+        }
+      }
+
+      setViewingDate(targetDate);
     }
 
-    return urlDate || undefined;
-  });
-  const [availableDates, setAvailableDates] = useState<string[]>([]);
+    initializeDate();
+  }, []);
 
   const { puzzle, bookList, firstPuzzleDate, loading, error } = usePuzzle(viewingDate);
   const { gameState, makeGuess, getHint } = useGameState(puzzle);
@@ -40,17 +63,23 @@ function App() {
 
   // Update URL when viewing date changes
   useEffect(() => {
+    if (!cachedFirstPuzzleDate) return; // Wait for firstPuzzleDate to load
+
     const params = new URLSearchParams(window.location.search);
     if (viewingDate) {
-      params.set('date', viewingDate);
+      // Use id parameter instead of date for shorter URLs
+      const puzzleNumber = getPuzzleNumber(viewingDate, cachedFirstPuzzleDate);
+      params.set('id', puzzleNumber.toString());
+      params.delete('date'); // Remove old date param if it exists
     } else {
+      params.delete('id');
       params.delete('date');
     }
     const newUrl = params.toString()
       ? `${window.location.pathname}?${params.toString()}`
       : window.location.pathname;
     window.history.replaceState({}, '', newUrl);
-  }, [viewingDate]);
+  }, [viewingDate, cachedFirstPuzzleDate]);
 
   const currentDate = viewingDate || getTodayDate();
   const todayDate = getTodayDate();

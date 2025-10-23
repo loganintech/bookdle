@@ -31,9 +31,9 @@ export async function generateShareText(
 
   const emojiGrid = emojis.join('');
 
-  // Generate URL to this specific puzzle
+  // Generate URL to this specific puzzle using id parameter (shorter)
   const baseUrl = window.location.origin + window.location.pathname;
-  const puzzleUrl = `${baseUrl}?date=${date}`;
+  const puzzleUrl = `${baseUrl}?id=${puzzleNumber}`;
 
   return `Bookdle #${puzzleNumber} ${scoreText}: ${emojiGrid}\n${puzzleUrl}`;
 }

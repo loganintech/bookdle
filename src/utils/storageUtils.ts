@@ -2,6 +2,7 @@ import type { GameState, GameResult, UserStats } from '../types';
 
 const STORAGE_KEY_HISTORY = 'bookdle_history';
 const STORAGE_KEY_CURRENT = 'bookdle_current';
+const STORAGE_KEY_IN_PROGRESS = 'bookdle_in_progress';
 
 /**
  * Get game history from localStorage
@@ -12,6 +13,19 @@ export function getGameHistory(): Record<string, GameResult> {
     return data ? JSON.parse(data) : {};
   } catch (error) {
     console.error('Error reading game history:', error);
+    return {};
+  }
+}
+
+/**
+ * Get all in-progress games from localStorage
+ */
+function getInProgressGames(): Record<string, GameState> {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY_IN_PROGRESS);
+    return data ? JSON.parse(data) : {};
+  } catch (error) {
+    console.error('Error reading in-progress games:', error);
     return {};
   }
 }
@@ -30,12 +44,30 @@ export function saveGameResult(result: GameResult): void {
 }
 
 /**
- * Get current game state from localStorage
+ * Get current game state from localStorage for a specific date
  */
-export function getCurrentGameState(): GameState | null {
+export function getCurrentGameState(date: string): GameState | null {
   try {
-    const data = localStorage.getItem(STORAGE_KEY_CURRENT);
-    return data ? JSON.parse(data) : null;
+    // Try new storage format first
+    const inProgress = getInProgressGames();
+    if (inProgress[date]) {
+      return inProgress[date];
+    }
+
+    // Fall back to old storage format for backward compatibility
+    const oldData = localStorage.getItem(STORAGE_KEY_CURRENT);
+    if (oldData) {
+      const oldState = JSON.parse(oldData);
+      // If the old saved state matches the requested date, migrate it
+      if (oldState && oldState.date === date) {
+        // Migrate to new format
+        saveCurrentGameState(oldState);
+        localStorage.removeItem(STORAGE_KEY_CURRENT);
+        return oldState;
+      }
+    }
+
+    return null;
   } catch (error) {
     console.error('Error reading current game state:', error);
     return null;
@@ -47,18 +79,22 @@ export function getCurrentGameState(): GameState | null {
  */
 export function saveCurrentGameState(state: GameState): void {
   try {
-    localStorage.setItem(STORAGE_KEY_CURRENT, JSON.stringify(state));
+    const inProgress = getInProgressGames();
+    inProgress[state.date] = state;
+    localStorage.setItem(STORAGE_KEY_IN_PROGRESS, JSON.stringify(inProgress));
   } catch (error) {
     console.error('Error saving current game state:', error);
   }
 }
 
 /**
- * Clear current game state
+ * Clear current game state for a specific date
  */
-export function clearCurrentGameState(): void {
+export function clearCurrentGameState(date: string): void {
   try {
-    localStorage.removeItem(STORAGE_KEY_CURRENT);
+    const inProgress = getInProgressGames();
+    delete inProgress[date];
+    localStorage.setItem(STORAGE_KEY_IN_PROGRESS, JSON.stringify(inProgress));
   } catch (error) {
     console.error('Error clearing current game state:', error);
   }
