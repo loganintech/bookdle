@@ -60,3 +60,11 @@ export async function hasPuzzleForDate(date: string): Promise<boolean> {
   const puzzle = await getPuzzleByDate(date);
   return puzzle !== null;
 }
+
+/**
+ * Get all available puzzle dates sorted chronologically
+ */
+export async function getAllPuzzleDates(): Promise<string[]> {
+  const data = await loadPuzzleData();
+  return data.puzzles.map(p => p.date).sort();
+}
