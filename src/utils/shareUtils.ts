@@ -35,7 +35,7 @@ export async function generateShareText(
   const baseUrl = window.location.origin + window.location.pathname;
   const puzzleUrl = `${baseUrl}?date=${date}`;
 
-  return `Bookdle #${puzzleNumber} ${scoreText}\n\n${emojiGrid}\n\n${puzzleUrl}`;
+  return `Bookdle #${puzzleNumber} ${scoreText}: ${emojiGrid}\n${puzzleUrl}`;
 }
 
 /**
