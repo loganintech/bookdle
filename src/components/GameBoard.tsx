@@ -135,7 +135,7 @@ export default function GameBoard({
       {gameState.gameOver && showResult && (
         <ResultModal
           won={gameState.won}
-          attempts={gameState.guesses.length}
+          attempts={gameState.actionHistory.length}
           correctAnswer={puzzle.book}
           author={puzzle.author}
           date={puzzle.date}
