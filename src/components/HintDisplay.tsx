@@ -4,9 +4,10 @@ import './HintDisplay.css';
 interface HintDisplayProps {
   puzzle: Puzzle;
   hintsUnlocked: number;
+  gameOver?: boolean;
 }
 
-export default function HintDisplay({ puzzle, hintsUnlocked }: HintDisplayProps) {
+export default function HintDisplay({ puzzle, hintsUnlocked, gameOver = false }: HintDisplayProps) {
   const hints = [
     { label: 'Year', value: puzzle.year, unlockAt: 1 },
     { label: 'Genre', value: puzzle.genre, unlockAt: 2 },
@@ -18,19 +19,20 @@ export default function HintDisplay({ puzzle, hintsUnlocked }: HintDisplayProps)
     <div className="hint-display">
       <h3 className="hint-title">Hints</h3>
       <div className="hints-grid">
-        {hints.map((hint) => (
-          <div
-            key={hint.label}
-            className={`hint-card ${
-              hintsUnlocked >= hint.unlockAt ? 'unlocked' : 'locked'
-            }`}
-          >
-            <div className="hint-label">{hint.label}</div>
-            <div className="hint-value">
-              {hintsUnlocked >= hint.unlockAt ? hint.value : '???'}
+        {hints.map((hint) => {
+          const isUnlocked = gameOver || hintsUnlocked >= hint.unlockAt;
+          return (
+            <div
+              key={hint.label}
+              className={`hint-card ${isUnlocked ? 'unlocked' : 'locked'}`}
+            >
+              <div className="hint-label">{hint.label}</div>
+              <div className="hint-value">
+                {isUnlocked ? hint.value : '???'}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

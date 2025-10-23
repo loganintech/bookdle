@@ -63,7 +63,11 @@ export default function GameBoard({
         correctAnswer={gameState.won ? puzzle.book : undefined}
       />
 
-      <HintDisplay puzzle={puzzle} hintsUnlocked={gameState.hintsUnlocked} />
+      <HintDisplay
+        puzzle={puzzle}
+        hintsUnlocked={gameState.hintsUnlocked}
+        gameOver={gameState.gameOver}
+      />
 
       {!gameState.gameOver && gameState.guesses.length === 0 && gameState.hintsUnlocked === 0 && (
         <div className="hint-button-container">
