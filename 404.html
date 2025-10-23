@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Bookdle - Redirecting...</title>
+    <script>
+      // GitHub Pages SPA redirect handler
+      // This script handles routing for single page apps on GitHub Pages
+      // When a user accesses /bookdle (without trailing slash), GitHub serves this 404.html
+      // We redirect to the correct path with trailing slash or to the index
+
+      (function() {
+        var path = window.location.pathname;
+        var base = '/bookdle';
+
+        // If accessing /bookdle without trailing slash, redirect to /bookdle/
+        if (path === base) {
+          window.location.replace(base + '/' + window.location.search + window.location.hash);
+        }
+        // For other 404s within the app, redirect to index and let client-side routing handle it
+        else if (path.startsWith(base + '/')) {
+          var redirect = window.location.pathname.slice(base.length + 1);
+          window.location.replace(base + '/?redirect=' + encodeURIComponent(redirect) + window.location.search.slice(1) + window.location.hash);
+        }
+        // If somehow at root or elsewhere, go to bookdle home
+        else {
+          window.location.replace(base + '/');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
