@@ -6,7 +6,7 @@ async fn fetch(mut req: Request, _env: Env, _ctx: Context) -> Result<Response> {
     let path = url.path();
 
     // Redirect root path to GitHub profile
-    if path == "/" {
+    if path == "/" || path == "" {
         return Response::redirect(Url::parse("https://github.com/loganintech")?);
     }
 
