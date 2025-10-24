@@ -9,10 +9,5 @@ routes = [
     { pattern = "logan.game/bookdle/*", zone_name = "logan.game" }
 ]
 
-[build]
-command = "cargo install -q worker-build && worker-build --release"
-
-
-
 # Or use this if you want to configure routes in the dashboard instead:
 # workers_dev = true
