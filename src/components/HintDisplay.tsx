@@ -11,7 +11,7 @@ export default function HintDisplay({ puzzle, hintsUnlocked, gameOver = false }:
   const hints = [
     { label: 'Year', value: puzzle.year, unlockAt: 1 },
     { label: 'Genre', value: puzzle.genre, unlockAt: 2 },
-    { label: 'Length', value: puzzle.length, unlockAt: 3 },
+    { label: 'Length', value: `${puzzle.length} (${puzzle.pageCount} pages)`, unlockAt: 3 },
     { label: 'Author', value: puzzle.author, unlockAt: 4 },
   ];
 

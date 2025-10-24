@@ -3,6 +3,20 @@ import type { Puzzle, PuzzleData, PuzzleDataWithIds } from '../types';
 let cachedPuzzles: Puzzle[] | null = null;
 
 /**
+ * Calculate length label from page count
+ * < 200: Short
+ * 200-499: Medium
+ * 500-899: Long
+ * 900+: Very Long
+ */
+export function calculateLength(pageCount: number): string {
+  if (pageCount < 200) return 'Short';
+  if (pageCount < 500) return 'Medium';
+  if (pageCount < 900) return 'Long';
+  return 'Very Long';
+}
+
+/**
  * Load puzzle data from JSON file and add IDs based on array index
  */
 export async function loadPuzzleData(): Promise<PuzzleDataWithIds> {
@@ -17,10 +31,11 @@ export async function loadPuzzleData(): Promise<PuzzleDataWithIds> {
     }
     const data = await response.json() as PuzzleData;
 
-    // Add IDs based on array index (1-indexed)
+    // Add IDs and calculate length labels based on array index (1-indexed)
     cachedPuzzles = data.puzzles.map((puzzle, index) => ({
       ...puzzle,
       id: index + 1,
+      length: calculateLength(puzzle.pageCount),
     }));
 
     return { puzzles: cachedPuzzles };
@@ -41,11 +56,27 @@ export async function getPuzzleByDate(date: string): Promise<Puzzle | null> {
 }
 
 /**
- * Get all book titles for autocomplete
+ * Get all book titles for autocomplete, merging puzzle books with additional titles
  */
 export async function getAllBookTitles(): Promise<string[]> {
-  const data = await loadPuzzleData();
-  return data.puzzles.map(p => p.book).sort();
+  // Get puzzle books (these must always be included)
+  const puzzleData = await loadPuzzleData();
+  const puzzleBooks = puzzleData.puzzles.map(p => p.book);
+
+  // Try to load additional book titles
+  let additionalBooks: string[] = [];
+  try {
+    const response = await fetch('/bookdle/data/book_titles.json');
+    if (response.ok) {
+      additionalBooks = await response.json() as string[];
+    }
+  } catch (error) {
+    console.error('Error loading book titles (using puzzle books only):', error);
+  }
+
+  // Merge and deduplicate
+  const allBooks = new Set([...puzzleBooks, ...additionalBooks]);
+  return Array.from(allBooks).sort();
 }
 
 /**

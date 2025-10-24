@@ -7,7 +7,7 @@
       "author": "George Orwell",
       "year": 1949,
       "genre": "Dystopian Fiction",
-      "length": "Medium (328 pages)"
+      "pageCount": 328
     },
     {
       "date": "2025-10-23",
@@ -16,7 +16,7 @@
       "author": "Jane Austen",
       "year": 1813,
       "genre": "Romance",
-      "length": "Medium (432 pages)"
+      "pageCount": 432
     },
     {
       "date": "2025-10-24",
@@ -25,7 +25,7 @@
       "author": "Herman Melville",
       "year": 1851,
       "genre": "Adventure",
-      "length": "Long (635 pages)"
+      "pageCount": 635
     },
     {
       "date": "2025-10-25",
@@ -34,7 +34,7 @@
       "author": "F. Scott Fitzgerald",
       "year": 1925,
       "genre": "Literary Fiction",
-      "length": "Short (180 pages)"
+      "pageCount": 180
     },
     {
       "date": "2025-10-26",
@@ -43,7 +43,7 @@
       "author": "Charles Dickens",
       "year": 1859,
       "genre": "Historical Fiction",
-      "length": "Medium (448 pages)"
+      "pageCount": 448
     },
     {
       "date": "2025-10-27",
@@ -52,7 +52,7 @@
       "author": "J.M. Barrie",
       "year": 1911,
       "genre": "Fantasy",
-      "length": "Short (240 pages)"
+      "pageCount": 240
     },
     {
       "date": "2025-10-28",
@@ -61,7 +61,7 @@
       "author": "J.K. Rowling",
       "year": 1997,
       "genre": "Fantasy",
-      "length": "Medium (309 pages)"
+      "pageCount": 309
     },
     {
       "date": "2025-10-29",
@@ -70,7 +70,7 @@
       "author": "J.R.R. Tolkien",
       "year": 1937,
       "genre": "Fantasy",
-      "length": "Medium (310 pages)"
+      "pageCount": 310
     },
     {
       "date": "2025-10-30",
@@ -79,7 +79,7 @@
       "author": "Ray Bradbury",
       "year": 1953,
       "genre": "Dystopian Fiction",
-      "length": "Short (158 pages)"
+      "pageCount": 158
     },
     {
       "date": "2025-10-31",
@@ -88,7 +88,7 @@
       "author": "L.P. Hartley",
       "year": 1953,
       "genre": "Literary Fiction",
-      "length": "Short (282 pages)"
+      "pageCount": 282
     },
     {
       "date": "2025-11-01",
@@ -97,7 +97,7 @@
       "author": "Leo Tolstoy",
       "year": 1878,
       "genre": "Literary Fiction",
-      "length": "Long (864 pages)"
+      "pageCount": 864
     },
     {
       "date": "2025-11-02",
@@ -106,7 +106,7 @@
       "author": "Mark Twain",
       "year": 1884,
       "genre": "Adventure",
-      "length": "Medium (366 pages)"
+      "pageCount": 366
     },
     {
       "date": "2025-11-03",
@@ -115,7 +115,7 @@
       "author": "Franz Kafka",
       "year": 1925,
       "genre": "Literary Fiction",
-      "length": "Short (255 pages)"
+      "pageCount": 255
     },
     {
       "date": "2025-11-04",
@@ -124,7 +124,7 @@
       "author": "Zora Neale Hurston",
       "year": 1937,
       "genre": "Literary Fiction",
-      "length": "Short (193 pages)"
+      "pageCount": 193
     },
     {
       "date": "2025-11-05",
@@ -133,7 +133,7 @@
       "author": "James Joyce",
       "year": 1916,
       "genre": "Literary Fiction",
-      "length": "Short (253 pages)"
+      "pageCount": 253
     },
     {
       "date": "2025-11-06",
@@ -142,7 +142,7 @@
       "author": "Gabriel García Márquez",
       "year": 1967,
       "genre": "Magical Realism",
-      "length": "Medium (417 pages)"
+      "pageCount": 417
     },
     {
       "date": "2025-11-07",
@@ -151,7 +151,7 @@
       "author": "Harper Lee",
       "year": 1960,
       "genre": "Literary Fiction",
-      "length": "Medium (324 pages)"
+      "pageCount": 324
     },
     {
       "date": "2025-11-08",
@@ -160,7 +160,7 @@
       "author": "J.D. Salinger",
       "year": 1951,
       "genre": "Literary Fiction",
-      "length": "Short (234 pages)"
+      "pageCount": 234
     },
     {
       "date": "2025-11-09",
@@ -169,7 +169,7 @@
       "author": "Daphne du Maurier",
       "year": 1938,
       "genre": "Gothic Fiction",
-      "length": "Medium (380 pages)"
+      "pageCount": 380
     },
     {
       "date": "2025-11-10",
@@ -178,7 +178,7 @@
       "author": "Charles Dickens",
       "year": 1850,
       "genre": "Literary Fiction",
-      "length": "Long (624 pages)"
+      "pageCount": 624
     },
     {
       "date": "2025-11-11",
@@ -187,7 +187,7 @@
       "author": "Samuel Beckett",
       "year": 1938,
       "genre": "Literary Fiction",
-      "length": "Short (282 pages)"
+      "pageCount": 282
     },
     {
       "date": "2025-11-12",
@@ -196,7 +196,7 @@
       "author": "Charlotte Brontë",
       "year": 1847,
       "genre": "Gothic Fiction",
-      "length": "Medium (507 pages)"
+      "pageCount": 507
     },
     {
       "date": "2025-11-13",
@@ -205,7 +205,7 @@
       "author": "Jean Rhys",
       "year": 1966,
       "genre": "Literary Fiction",
-      "length": "Short (192 pages)"
+      "pageCount": 192
     },
     {
       "date": "2025-11-14",
@@ -214,7 +214,7 @@
       "author": "Various Authors",
       "year": 1611,
       "genre": "Religious Text",
-      "length": "Very Long (1200+ pages)"
+      "pageCount": 300
     },
     {
       "date": "2025-11-15",
@@ -223,7 +223,7 @@
       "author": "James Joyce",
       "year": 1922,
       "genre": "Literary Fiction",
-      "length": "Long (732 pages)"
+      "pageCount": 732
     },
     {
       "date": "2025-11-16",
@@ -232,7 +232,7 @@
       "author": "Joseph Heller",
       "year": 1961,
       "genre": "Satirical Fiction",
-      "length": "Medium (453 pages)"
+      "pageCount": 453
     },
     {
       "date": "2025-11-17",
@@ -241,7 +241,7 @@
       "author": "Kurt Vonnegut",
       "year": 1969,
       "genre": "Science Fiction",
-      "length": "Short (275 pages)"
+      "pageCount": 275
     },
     {
       "date": "2025-11-18",
@@ -250,7 +250,7 @@
       "author": "Louisa May Alcott",
       "year": 1868,
       "genre": "Coming-of-Age",
-      "length": "Medium (449 pages)"
+      "pageCount": 449
     },
     {
       "date": "2025-11-19",
@@ -259,16 +259,7 @@
       "author": "Thomas Pynchon",
       "year": 1973,
       "genre": "Literary Fiction",
-      "length": "Long (760 pages)"
-    },
-    {
-      "date": "2025-11-20",
-      "firstSentence": "Lolita, light of my life, fire of my loins.",
-      "book": "Lolita",
-      "author": "Vladimir Nabokov",
-      "year": 1955,
-      "genre": "Literary Fiction",
-      "length": "Medium (336 pages)"
+      "pageCount": 760
     }
   ]
 }

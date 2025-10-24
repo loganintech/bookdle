@@ -7,7 +7,8 @@ export interface Puzzle {
   author: string;
   year: number;
   genre: string;
-  length: string; // e.g., "Medium (326 pages)"
+  pageCount: number; // Number of pages
+  length: string; // Calculated: "Short", "Medium", "Long", or "Very Long"
 }
 
 // Puzzle data without ID (as stored in JSON)
@@ -18,7 +19,7 @@ export interface PuzzleDataItem {
   author: string;
   year: number;
   genre: string;
-  length: string;
+  pageCount: number; // Number of pages
 }
 
 // Data structure for puzzles.json (without IDs)
