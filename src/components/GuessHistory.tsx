@@ -9,15 +9,34 @@ interface GuessHistoryProps {
 }
 
 export default function GuessHistory({ actionHistory, correctAnswer, gameOver, won }: GuessHistoryProps) {
-  if (actionHistory.length === 0 && !gameOver) {
+  // Always show the guess history container with pre-allocated slots
+  const MAX_ATTEMPTS = 5;
+
+  // Create array of 5 slots, filled with actual actions or empty
+  const slots = Array.from({ length: MAX_ATTEMPTS }, (_, idx) => {
+    if (idx < actionHistory.length) {
+      return actionHistory[idx];
+    }
     return null;
-  }
+  });
 
   return (
     <div className="guess-history">
       <h3 className="history-title">Your Guesses</h3>
       <div className="guesses-list">
-        {actionHistory.map((action, idx) => {
+        {slots.map((action, idx) => {
+          // Empty slot
+          if (!action) {
+            return (
+              <div key={`empty-${idx}`} className="guess-item empty">
+                <span className="guess-number">{idx + 1}</span>
+                <span className="guess-text empty-text">—</span>
+                <span className="guess-icon"></span>
+              </div>
+            );
+          }
+
+          // Hint action
           if (action.type === 'hint') {
             return (
               <div key={`hint-${idx}`} className="guess-item hint-item">
@@ -28,6 +47,7 @@ export default function GuessHistory({ actionHistory, correctAnswer, gameOver, w
             );
           }
 
+          // Guess action
           const isCorrect =
             correctAnswer &&
             action.value.toLowerCase() === correctAnswer.toLowerCase();

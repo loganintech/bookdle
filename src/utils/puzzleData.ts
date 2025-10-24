@@ -1,13 +1,13 @@
-import type { Puzzle, PuzzleData } from '../types';
+import type { Puzzle, PuzzleData, PuzzleDataWithIds } from '../types';
 
-let cachedPuzzleData: PuzzleData | null = null;
+let cachedPuzzles: Puzzle[] | null = null;
 
 /**
- * Load puzzle data from JSON file
+ * Load puzzle data from JSON file and add IDs based on array index
  */
-export async function loadPuzzleData(): Promise<PuzzleData> {
-  if (cachedPuzzleData) {
-    return cachedPuzzleData;
+export async function loadPuzzleData(): Promise<PuzzleDataWithIds> {
+  if (cachedPuzzles) {
+    return { puzzles: cachedPuzzles };
   }
 
   try {
@@ -15,8 +15,15 @@ export async function loadPuzzleData(): Promise<PuzzleData> {
     if (!response.ok) {
       throw new Error('Failed to load puzzle data');
     }
-    cachedPuzzleData = await response.json();
-    return cachedPuzzleData as PuzzleData;
+    const data = await response.json() as PuzzleData;
+
+    // Add IDs based on array index (1-indexed)
+    cachedPuzzles = data.puzzles.map((puzzle, index) => ({
+      ...puzzle,
+      id: index + 1,
+    }));
+
+    return { puzzles: cachedPuzzles };
   } catch (error) {
     console.error('Error loading puzzle data:', error);
     throw error;
@@ -28,6 +35,7 @@ export async function loadPuzzleData(): Promise<PuzzleData> {
  */
 export async function getPuzzleByDate(date: string): Promise<Puzzle | null> {
   const data = await loadPuzzleData();
+  // loadPuzzleData already returns Puzzle objects with IDs
   const puzzle = data.puzzles.find(p => p.date === date);
   return puzzle || null;
 }

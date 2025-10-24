@@ -104,24 +104,17 @@ export default function GameBoard({
         <p className="sentence-text">{puzzle.firstSentence}</p>
       </div>
 
+      <HintDisplay
+        puzzle={puzzle}
+        hintsUnlocked={gameState.hintsUnlocked}
+        gameOver={gameState.gameOver}
+      />
+
       <GuessInput
         bookList={bookList}
         onGuess={handleGuess}
         disabled={gameState.gameOver}
         previousGuesses={gameState.guesses}
-      />
-
-      <GuessHistory
-        actionHistory={gameState.actionHistory}
-        correctAnswer={puzzle.book}
-        gameOver={gameState.gameOver}
-        won={gameState.won}
-      />
-
-      <HintDisplay
-        puzzle={puzzle}
-        hintsUnlocked={gameState.hintsUnlocked}
-        gameOver={gameState.gameOver}
       />
 
       {!gameState.gameOver && gameState.hintsUnlocked < 4 && gameState.actionHistory.length < 5 && (
@@ -131,6 +124,13 @@ export default function GameBoard({
           </button>
         </div>
       )}
+
+      <GuessHistory
+        actionHistory={gameState.actionHistory}
+        correctAnswer={puzzle.book}
+        gameOver={gameState.gameOver}
+        won={gameState.won}
+      />
 
       {gameState.gameOver && showResult && (
         <ResultModal

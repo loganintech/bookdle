@@ -1,6 +1,6 @@
-// Core puzzle data structure
+// Core puzzle data structure (id is calculated from array index)
 export interface Puzzle {
-  id: number;
+  id: number; // Calculated from array index + 1
   date: string; // YYYY-MM-DD format
   firstSentence: string;
   book: string;
@@ -10,8 +10,24 @@ export interface Puzzle {
   length: string; // e.g., "Medium (326 pages)"
 }
 
-// Data structure for puzzles.json
+// Puzzle data without ID (as stored in JSON)
+export interface PuzzleDataItem {
+  date: string;
+  firstSentence: string;
+  book: string;
+  author: string;
+  year: number;
+  genre: string;
+  length: string;
+}
+
+// Data structure for puzzles.json (without IDs)
 export interface PuzzleData {
+  puzzles: PuzzleDataItem[];
+}
+
+// Data structure returned by loadPuzzleData (with IDs added)
+export interface PuzzleDataWithIds {
   puzzles: Puzzle[];
 }
 

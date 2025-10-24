@@ -18,6 +18,7 @@ export default function GuessInput({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [justSelectedFromDropdown, setJustSelectedFromDropdown] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
@@ -31,13 +32,14 @@ export default function GuessInput({
         )
         .slice(0, 8); // Limit to 8 suggestions
       setSuggestions(filtered);
-      setShowSuggestions(filtered.length > 0);
+      // Only show suggestions if we didn't just select from dropdown
+      setShowSuggestions(filtered.length > 0 && !justSelectedFromDropdown);
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
     }
     setSelectedIndex(-1);
-  }, [input, bookList, previousGuesses]);
+  }, [input, bookList, previousGuesses, justSelectedFromDropdown]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,6 +58,7 @@ export default function GuessInput({
       setSuggestions([]);
       setShowSuggestions(false);
       setSelectedIndex(-1);
+      setJustSelectedFromDropdown(false);
     }
   };
 
@@ -77,11 +80,19 @@ export default function GuessInput({
   };
 
   const handleSuggestionClick = (book: string) => {
+    // Set the input value and hide dropdown (don't submit yet)
     setInput(book);
     setShowSuggestions(false);
     setSelectedIndex(-1);
+    setJustSelectedFromDropdown(true);
     // Focus the input so user can easily hit Enter if they want to submit
     inputRef.current?.focus();
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+    // Clear the flag when user types - allow dropdown to show again
+    setJustSelectedFromDropdown(false);
   };
 
   return (
@@ -92,10 +103,10 @@ export default function GuessInput({
             ref={inputRef}
             type="text"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             onFocus={() =>
-              setShowSuggestions(suggestions.length > 0 && input.length > 0)
+              setShowSuggestions(suggestions.length > 0 && input.length > 0 && !justSelectedFromDropdown)
             }
             placeholder="Type a book title..."
             className="guess-input"
