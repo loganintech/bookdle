@@ -2,15 +2,17 @@ name = "bookdle-proxy"
 main = "build/index.js"
 compatibility_date = "2025-10-24"
 
+# Routes configuration
+routes = [
+    { pattern = "logan.game/", zone_name = "logan.game" },
+    { pattern = "logan.game/bookdle", zone_name = "logan.game" },
+    { pattern = "logan.game/bookdle/*", zone_name = "logan.game" }
+]
+
 [build]
 command = "cargo install -q worker-build && worker-build --release"
 
-# Routes configuration
-routes = [
-  { pattern = "logan.game/", zone_name = "logan.game" },
-  { pattern = "logan.game/bookdle", zone_name = "logan.game" },
-  { pattern = "logan.game/bookdle/*", zone_name = "logan.game" }
-]
+
 
 # Or use this if you want to configure routes in the dashboard instead:
 # workers_dev = true
