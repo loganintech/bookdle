@@ -1,8 +1,11 @@
 name = "bookdle-proxy"
-main = "worker-proxy.js"
+# main = "worker-proxy.js"  # JavaScript version (replaced with Rust)
 compatibility_date = "2024-01-01"
 
-# Routes configuration - update this with your actual domain
+[build]
+command = "cargo install -q worker-build && worker-build --release"
+
+# Routes configuration
 routes = [
   { pattern = "logan.game/", zone_name = "logan.game" },
   { pattern = "logan.game/bookdle", zone_name = "logan.game" },
