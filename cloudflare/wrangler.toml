@@ -1,5 +1,5 @@
 name = "bookdle-proxy"
-# main = "worker-proxy.js"  # JavaScript version (replaced with Rust)
+main = "build/worker/shim.mjs"
 compatibility_date = "2024-01-01"
 
 [build]
