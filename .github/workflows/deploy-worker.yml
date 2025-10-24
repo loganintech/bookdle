@@ -24,9 +24,11 @@ jobs:
         run: cargo install -q worker-build
 
       - name: Build Worker
+        working-directory: ./cloudflare
         run: worker-build --release
 
       - name: Deploy to Cloudflare
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: ./cloudflare
