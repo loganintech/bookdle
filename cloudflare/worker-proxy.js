@@ -2,6 +2,11 @@ export default {
     async fetch(req, env, ctx) {
         const incoming = new URL(req.url);
 
+        // Redirect root path to GitHub profile
+        if (incoming.pathname === '/') {
+            return Response.redirect('https://github.com/loganintech', 301);
+        }
+
         // Only handle /bookdle path; anything else passes through untouched
         if (!incoming.pathname.startsWith('/bookdle')) {
             return new Response('Not handled by worker', { status: 404 });
