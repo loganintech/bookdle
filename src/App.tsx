@@ -5,10 +5,11 @@ import GameBoard from './components/GameBoard';
 import StatsModal from './components/StatsModal';
 import HelpModal from './components/HelpModal';
 import PuzzleNavigation from './components/PuzzleNavigation';
+import MigrationMessage from './components/MigrationMessage';
 import { usePuzzle } from './hooks/usePuzzle';
 import { useGameState } from './hooks/useGameState';
 import { getAllPuzzleDates, getFirstPuzzleDate } from './utils/puzzleData';
-import { getTodayDate, getDateFromPuzzleNumber, getPuzzleNumber } from './utils/dateUtils';
+import { getTodayDate, getDateFromPuzzleNumber, getPuzzleNumber, isAfterMigrationDate } from './utils/dateUtils';
 
 function App() {
   const [showStats, setShowStats] = useState(false);
@@ -118,6 +119,16 @@ function App() {
   }
 
   if (error || !puzzle) {
+    // Show migration message if we're on or after November 20, 2025
+    if (isAfterMigrationDate(currentDate)) {
+      return (
+        <div className="app">
+          <MigrationMessage />
+        </div>
+      );
+    }
+
+    // Show generic error for earlier dates
     return (
       <div className="app">
         <div className="error">

@@ -56,3 +56,11 @@ export function isValidDateString(dateString: string): boolean {
   const date = new Date(dateString + 'T00:00:00Z');
   return !isNaN(date.getTime());
 }
+
+/**
+ * Check if a date is on or after the migration date (November 20, 2025)
+ */
+export function isAfterMigrationDate(dateString: string): boolean {
+  const MIGRATION_DATE = '2025-11-20';
+  return dateString >= MIGRATION_DATE;
+}
