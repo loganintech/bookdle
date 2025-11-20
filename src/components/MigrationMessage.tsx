@@ -31,9 +31,6 @@ function MigrationMessage({ className }: MigrationMessageProps) {
             <li>
               <strong>Historical Guesses:</strong> Your game history is saved and accessible from anywhere
             </li>
-            <li>
-              <strong>Improved Experience:</strong> Better performance and new features coming soon
-            </li>
           </ul>
         </div>
 
