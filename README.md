@@ -44,7 +44,7 @@ A daily word game where you guess the book from its first sentence. Like Wordle,
    npm run dev
    ```
 
-4. Open [http://localhost:5173/bookdle/](http://localhost:5173/bookdle/) in your browser
+4. Open [http://localhost:5173/](http://localhost:5173/) in your browser
 
 ### Building for Production
 
@@ -110,7 +110,7 @@ To add new puzzles, edit `public/data/puzzles.json`:
   "puzzles": [
     {
       "id": 1,
-      "date": "2025-10-22",
+      "date": "2026-07-14",
       "firstSentence": "It was a bright cold day in April, and the clocks were striking thirteen.",
       "book": "1984",
       "author": "George Orwell",

@@ -25,7 +25,7 @@ export async function loadPuzzleData(): Promise<PuzzleDataWithIds> {
   }
 
   try {
-    const response = await fetch('/bookdle/data/puzzles.json');
+    const response = await fetch(new URL('data/puzzles.json', import.meta.env.BASE_URL));
     if (!response.ok) {
       throw new Error('Failed to load puzzle data');
     }
@@ -66,7 +66,7 @@ export async function getAllBookTitles(): Promise<string[]> {
   // Try to load additional book titles
   let additionalBooks: string[] = [];
   try {
-    const response = await fetch('/bookdle/data/book_titles.json');
+    const response = await fetch(new URL('data/book_titles.json', import.meta.env.BASE_URL));
     if (response.ok) {
       additionalBooks = await response.json() as string[];
     }
